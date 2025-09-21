@@ -3,9 +3,9 @@ import { Icon } from "astro-icon/components";
 ---
 
 <!-- There can't be a filter on parent element, or it will break `fixed` -->
-<div class="back-to-top-wrapper hidden lg:block">
+<div class="back-to-top-wrapper">
     <div id="back-to-top-btn" class="back-to-top-btn hide flex items-center rounded-2xl overflow-hidden transition" onclick="backToTop()">
-        <button aria-label="Back to Top" class="btn-card h-[3.75rem] w-[3.75rem]">
+        <button aria-label="Back to Top" class="btn-card h-[3rem] w-[3rem] lg:h-[3.75rem] lg:w-[3.75rem]">
             <Icon name="material-symbols:keyboard-arrow-up-rounded" class="mx-auto"></Icon>
         </button>
     </div>
@@ -29,16 +29,35 @@ import { Icon } from "astro-icon/components";
     bottom: 10rem
     opacity: 1
     cursor: pointer
-    transform: translateX(5rem)
     pointer-events: auto
+    z-index: 50
     i
         font-size: 1.75rem
-    &.hide
-        transform: translateX(5rem) scale(0.9)
-        opacity: 0
-        pointer-events: none
-    &:active
-      transform: translateX(5rem) scale(0.9)
+    
+    // 桌面端：保持原始逻辑 - 相对于容器定位，用translateX控制显示
+    @media (min-width: 1024px)
+        right: auto
+        left: 100%
+        transform: translateX(0)  // 显示状态：不偏移
+        &.hide
+            transform: translateX(5rem) scale(0.9)  // 隐藏状态：向右偏移
+            opacity: 0
+            pointer-events: none
+        &:active
+            transform: translateX(0) scale(0.9)
+    
+    // 移动端：固定在屏幕右下角
+    @media (max-width: 1023px)
+        right: 1rem
+        left: auto
+        bottom: 5rem
+        transform: translateX(0)
+        &.hide
+            transform: translateX(100%) scale(0.9)
+            opacity: 0
+            pointer-events: none
+        &:active
+            transform: translateX(0) scale(0.9)
 
 </style>
 

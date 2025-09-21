@@ -4,7 +4,7 @@ published: 2025-08-02T07:30:35.000Z
 updated: 2025-08-02T07:33:55.000Z
 description: OpenWebUI使用nginx来供外部访问的细节错误
 image: '/uploads/images/openwebui.png'
-tags: [AI, Openwebui, Nginx]
+tags: [AI, OpenWebUI, Nginx]
 lang: ""
 ---
 
