@@ -1,4 +1,4 @@
----
+pnpm---
 import { Icon } from "astro-icon/components";
 ---
 
@@ -29,29 +29,35 @@ import { Icon } from "astro-icon/components";
     bottom: 10rem
     opacity: 1
     cursor: pointer
+    transform: translateX(0)
     pointer-events: auto
-    z-index: 50
     i
         font-size: 1.75rem
+    &.hide
+        transform: translateX(5rem) scale(0.9)
+        opacity: 0
+        pointer-events: none
+    &:active
+      transform: translateX(0) scale(0.9)
     
-    // 桌面端：保持原始逻辑 - 相对于容器定位，用translateX控制显示
+    // 桌面端：固定在屏幕右侧，完全脱离文章内容区域
     @media (min-width: 1024px)
-        right: auto
-        left: 100%
-        transform: translateX(0)  // 显示状态：不偏移
+        right: 10rem
+        left: auto
+        margin-right: 0
+        transform: translateX(0)
         &.hide
-            transform: translateX(5rem) scale(0.9)  // 隐藏状态：向右偏移
+            transform: translateX(100%) scale(0.9)
             opacity: 0
             pointer-events: none
         &:active
             transform: translateX(0) scale(0.9)
     
-    // 移动端：固定在屏幕右下角
+    // 移动端适配
     @media (max-width: 1023px)
         right: 1rem
         left: auto
         bottom: 5rem
-        transform: translateX(0)
         &.hide
             transform: translateX(100%) scale(0.9)
             opacity: 0
