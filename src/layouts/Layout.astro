@@ -225,12 +225,18 @@ const bannerOffset =
 				background-position: var(--bg-position) !important;
 				background-size: var(--bg-size) !important;
 				background-repeat: var(--bg-repeat) !important;
-				background-attachment: var(--bg-attachment) !important;
+				/* Removed background-attachment as position:fixed already handles it and it causes issues on mobile */
 				opacity: 0 !important;
 				pointer-events: none !important;
 				z-index: -1 !important;
 				display: block !important;
 				transition: opacity 0.3s ease-in-out !important;
+				/* Mobile compatibility fixes */
+				will-change: opacity !important;
+				-webkit-backface-visibility: hidden !important;
+				backface-visibility: hidden !important;
+				transform: translateZ(0) !important;
+				-webkit-transform: translateZ(0) !important;
 			}
 			
 			body.bg-loaded::before {
