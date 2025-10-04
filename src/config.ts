@@ -35,7 +35,7 @@ export const siteConfig: SiteConfig = {
 	},
 	background: {
 		enable: true, // Enable background image
-		src: "https://images.ai0728.com.cn/random?type=img&dir=package", // 🎯 使用主力图床测试 fallback
+		src: "https://image.cloudrunmax.top/random?type=img&dir=package", // 🎯 使用主力图床测试 fallback
 		position: "center", // Background position: 'top', 'center', 'bottom'
 		size: "cover", // Background size: 'cover', 'contain', 'auto'
 		repeat: "no-repeat", // Background repeat: 'no-repeat', 'repeat', 'repeat-x', 'repeat-y'
@@ -71,7 +71,7 @@ export const siteConfig: SiteConfig = {
 		},
 		{
 			name: "私人图床",
-			url: "https://image.ai0728.com.cn/",
+			url: "https://image.cloudrunmax.top/",
 			image: "/favicon/imagebed.png",
 			description: "利用CloudflareR2搭建的私人图床",
 			external: true,
@@ -137,8 +137,8 @@ export const licenseConfig: LicenseConfig = {
 //图片回退
 export const imageFallbackConfig: ImageFallbackConfig = {
 	enable: true,
-	originalDomain: "images.ai0728.com.cn",           // 主力图床
-	fallbackDomain: "image.cloudrunmax.top",         // R2备用图床
+	originalDomain: "image.cloudrunmax.top",           // 主力图床
+	fallbackDomain: "images.ai0728.com.cn",         // R2备用图床
 };
 
 export const umamiConfig: UmamiConfig = {
