@@ -16,8 +16,12 @@ import { Icon } from "astro-icon/components";
             <p class="text-lg text-black/80 dark:text-white/80 mb-3">
                 如果您觉得我的内容对您有帮助，欢迎通过以下方式支持我的创作。您的每一份支持都是我持续创作的动力！
             </p>
-            <p class="text-sm text-black/60 dark:text-white/60">
+            <p class="text-sm text-red-500 dark:text-red-400 mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                ⚠️ 如果是用于AI网站的付费，请注明用途以及保存付费依据，发往<a href="mailto:a2120060205@icloud.com" class="email-tooltip underline font-semibold text-blue-600 dark:text-amber-300 hover:text-blue-800 dark:hover:text-amber-100"><span class="tooltip-text">a2120060205@icloud.com</span>邮箱</a>即可。
+            </p>
+            <p class="text-sm text-black/60 dark:text-white/60 mt-3">
                 所有赞助将用于网站维护、服务器费用以及内容创作。
+                以及感谢您的慷慨支持！
             </p>
         </div>
 
@@ -129,6 +133,64 @@ import { Icon } from "astro-icon/components";
 .copy-btn:hover {
     color: var(--primary);
     opacity: 0.8;
+}
+
+/* Email tooltip styles */
+.email-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.email-tooltip .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    z-index: 50;
+    transition: all 0.2s ease-in-out;
+    
+    /* Light mode */
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Dark mode tooltip */
+:global(.dark) .email-tooltip .tooltip-text {
+    background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    color: #1f2937;
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+}
+
+/* Tooltip arrow */
+.email-tooltip .tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #3b82f6 transparent transparent transparent;
+}
+
+:global(.dark) .email-tooltip .tooltip-text::after {
+    border-color: #fbbf24 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.email-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
 }
 </style>
 
