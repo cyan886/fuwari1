@@ -166,118 +166,109 @@ const jsonLd = {
             
             <!-- 分享按钮功能 -->
             <script is:inline>
-                document.addEventListener('DOMContentLoaded', function() {
+                function setupShareButton() {
                     const shareButton = document.getElementById('share-button');
-                    const shareText = document.getElementById('share-text');
-                    
-                    if (shareButton && shareText) {
-                        shareButton.addEventListener('click', function() {
-                            const url = window.location.href;
-                            
-                            // 优先使用传统方法 (Safari 兼容性更好)
-                            function fallbackCopy(text) {
-                                const textArea = document.createElement('textarea');
-                                textArea.value = text;
-                                
-                                // Safari 需要这些特殊设置
-                                textArea.style.position = 'fixed';
-                                textArea.style.top = '0';
-                                textArea.style.left = '0';
-                                textArea.style.width = '2em';
-                                textArea.style.height = '2em';
-                                textArea.style.padding = '0';
-                                textArea.style.border = 'none';
-                                textArea.style.outline = 'none';
-                                textArea.style.boxShadow = 'none';
-                                textArea.style.background = 'transparent';
-                                textArea.setAttribute('readonly', '');
-                                textArea.style.opacity = '0';
-                                
-                                document.body.appendChild(textArea);
-                                
-                                // iOS Safari 需要特殊处理
-                                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-                                if (isIOS) {
-                                    const range = document.createRange();
-                                    range.selectNodeContents(textArea);
-                                    const selection = window.getSelection();
-                                    selection.removeAllRanges();
-                                    selection.addRange(range);
-                                    textArea.setSelectionRange(0, 999999);
-                                } else {
-                                    textArea.select();
-                                }
-                                
-                                let success = false;
-                                try {
-                                    success = document.execCommand('copy');
-                                } catch (err) {
-                                    console.error('[Share] execCommand failed:', err);
-                                }
-                                
-                                document.body.removeChild(textArea);
-                                return success;
-                            }
-                            
-                            // 首先尝试 Clipboard API (现代浏览器)
-                            if (navigator.clipboard && window.isSecureContext) {
-                                navigator.clipboard.writeText(url).then(function() {
-                                    // 显示成功反馈
-                                    const originalText = shareText.textContent;
-                                    shareText.textContent = '已复制!';
-                                    shareButton.style.backgroundColor = 'var(--primary)';
-                                    shareButton.style.color = 'white';
-                                    
-                                    setTimeout(function() {
-                                        shareText.textContent = originalText;
-                                        shareButton.style.backgroundColor = '';
-                                        shareButton.style.color = '';
-                                    }, 2000);
-                                    
-                                    console.log('[Share] URL copied (modern):', url);
-                                }).catch(function(err) {
-                                    console.warn('[Share] Clipboard API failed, trying fallback:', err);
-                                    // Clipboard API 失败,使用 fallback
-                                    if (fallbackCopy(url)) {
-                                        shareText.textContent = '已复制!';
-                                        shareButton.style.backgroundColor = 'var(--primary)';
-                                        shareButton.style.color = 'white';
-                                        setTimeout(function() {
-                                            shareText.textContent = '分享';
-                                            shareButton.style.backgroundColor = '';
-                                            shareButton.style.color = '';
-                                        }, 2000);
-                                        console.log('[Share] URL copied (fallback):', url);
-                                    } else {
-                                        shareText.textContent = '复制失败';
-                                        setTimeout(function() {
-                                            shareText.textContent = '分享';
-                                        }, 2000);
-                                    }
-                                });
+                    if (!shareButton) return;
+
+                    // Swup 会替换页面内容；避免重复绑定
+                    if (shareButton.dataset.shareBound === '1') return;
+                    shareButton.dataset.shareBound = '1';
+
+                    const shareText = shareButton.querySelector('#share-text');
+                    if (!shareText) return;
+
+                    shareButton.addEventListener('click', function() {
+                        const url = window.location.href;
+
+                        function showSuccess() {
+                            const originalText = shareText.textContent;
+                            shareText.textContent = '已复制!';
+                            shareButton.style.backgroundColor = 'var(--primary)';
+                            shareButton.style.color = 'white';
+
+                            setTimeout(function() {
+                                shareText.textContent = originalText || '分享';
+                                shareButton.style.backgroundColor = '';
+                                shareButton.style.color = '';
+                            }, 2000);
+                        }
+
+                        function showFailure() {
+                            shareText.textContent = '复制失败';
+                            setTimeout(function() {
+                                shareText.textContent = '分享';
+                            }, 2000);
+                        }
+
+                        // Safari 兼容 fallback
+                        function fallbackCopy(text) {
+                            const textArea = document.createElement('textarea');
+                            textArea.value = text;
+
+                            textArea.style.position = 'fixed';
+                            textArea.style.top = '0';
+                            textArea.style.left = '0';
+                            textArea.style.width = '2em';
+                            textArea.style.height = '2em';
+                            textArea.style.padding = '0';
+                            textArea.style.border = 'none';
+                            textArea.style.outline = 'none';
+                            textArea.style.boxShadow = 'none';
+                            textArea.style.background = 'transparent';
+                            textArea.setAttribute('readonly', '');
+                            textArea.style.opacity = '0';
+
+                            document.body.appendChild(textArea);
+
+                            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                            if (isIOS) {
+                                const range = document.createRange();
+                                range.selectNodeContents(textArea);
+                                const selection = window.getSelection();
+                                selection.removeAllRanges();
+                                selection.addRange(range);
+                                textArea.setSelectionRange(0, 999999);
                             } else {
-                                // 直接使用 fallback 方法
-                                if (fallbackCopy(url)) {
-                                    shareText.textContent = '已复制!';
-                                    shareButton.style.backgroundColor = 'var(--primary)';
-                                    shareButton.style.color = 'white';
-                                    setTimeout(function() {
-                                        shareText.textContent = '分享';
-                                        shareButton.style.backgroundColor = '';
-                                        shareButton.style.color = '';
-                                    }, 2000);
-                                    console.log('[Share] URL copied (fallback):', url);
-                                } else {
-                                    console.error('[Share] All copy methods failed');
-                                    shareText.textContent = '复制失败';
-                                    setTimeout(function() {
-                                        shareText.textContent = '分享';
-                                    }, 2000);
-                                }
+                                textArea.select();
                             }
-                        });
-                    }
-                });
+
+                            let success = false;
+                            try {
+                                success = document.execCommand('copy');
+                            } catch (err) {
+                                console.error('[Share] execCommand failed:', err);
+                            }
+
+                            document.body.removeChild(textArea);
+                            return success;
+                        }
+
+                        if (navigator.clipboard && window.isSecureContext) {
+                            navigator.clipboard.writeText(url).then(function() {
+                                showSuccess();
+                            }).catch(function(err) {
+                                console.warn('[Share] Clipboard API failed, trying fallback:', err);
+                                if (fallbackCopy(url)) {
+                                    showSuccess();
+                                } else {
+                                    showFailure();
+                                }
+                            });
+                        } else {
+                            if (fallbackCopy(url)) {
+                                showSuccess();
+                            } else {
+                                showFailure();
+                            }
+                        }
+                    });
+                }
+
+                // 首次加载
+                setupShareButton();
+
+                // Swup 页面跳转后内容会被替换，需要重新绑定
+                document.addEventListener('swup:contentReplaced', setupShareButton);
             </script>
     <br>
 
