@@ -141,8 +141,8 @@ lang: zh_CN           # 指定语言 (可选)
 ## 🌐 部署
 
 本项目支持以下平台一键部署：
-
-- [Vercel](https://vercel.com) (推荐)
+- [EdegOne](https://edgeone.ai)(推荐)
+- [Vercel](https://vercel.com)
 - [Netlify](https://netlify.com)
 - [Cloudflare Pages](https://pages.cloudflare.com)
 
