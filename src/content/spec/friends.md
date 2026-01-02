@@ -1,9 +1,22 @@
 # 友链
 欢迎互换友链！
-## 申请格式
+<details>
+<summary>点击查看申请方式与 JSON 格式示例</summary>
 
-为了方便自动化处理，我们现在通过提交 PR 的方式申请友链；请在[提交](https://github.com/Besty0728/fuwari/tree/main/src/content/friends)提交一个json文件即可。
-文件名建议使用：`您的名称.json`（例如 `myblog.json`）。我们将根据 **PR 提交时间**（Git 记录）自动排序，越早提交的排在越前面。
+为了方便自动化处理，建议通过提交 PR 的方式申请友链；请在 [此处](https://github.com/Besty0728/fuwari/tree/main/src/content/friends) 提交一个 JSON 文件即可。
+
+如果您不熟悉 PR 操作，以及告知我您的友链要求，也可以通过 [提交 Issue](https://github.com/Besty0728/fuwari/issues/new?title=友链申请：您的名称) 的方式告知我，我会手动为您添加。
+
+**本站信息（申请时请参考）：**
+
+```json
+{
+  "name": "流转星(Betsy)",
+  "avatar": "https://image.cloudrunmax.top/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg",
+  "introduction": "分享网络技术、服务器部署、Unity开发、AI技术应用与原理",
+  "url": "https://www.micostar.cc"
+}
+```
 
 **内容格式示例：**
 
@@ -15,5 +28,9 @@
   "url": "https://example.com"
 }
 ```
+
 > **注意**：请确保您的头像链接允许跨域引用（Anti-leech），否则图片可能无法显示。
+
+</details>
+
 ---
