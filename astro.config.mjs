@@ -15,6 +15,7 @@ import remarkSectionize from "remark-sectionize";
 import { imageFallbackConfig, siteConfig } from "./src/config.ts";
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
 import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
+import { LinkCardComponent } from "./src/plugins/rehype-component-link-card.mjs";
 import rehypeImageFallback from "./src/plugins/rehype-image-fallback.mjs";
 import rehypeImageAttrs from "./src/plugins/rehype-image-attrs.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
@@ -134,6 +135,7 @@ export default defineConfig({
                 {
                     components: {
                         github: GithubCardComponent,
+                        link: LinkCardComponent,
                         note: (x, y) => AdmonitionComponent(x, y, "note"),
                         tip: (x, y) => AdmonitionComponent(x, y, "tip"),
                         important: (x, y) => AdmonitionComponent(x, y, "important"),

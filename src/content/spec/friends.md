@@ -12,7 +12,7 @@
 ```json
 {
   "name": "流转星(Betsy)",
-  "avatar": "https://image.cloudrunmax.top/file/CF/1756734381495_58fc963052f0a5cd8ce123b8d10c4a53.jpg",
+  "avatar": "https://image.cloudrunmax.top/file/CF/1767345178206_betsy.webp",
   "introduction": "分享网络技术、服务器部署、Unity开发、AI技术应用与原理",
   "url": "https://www.micostar.cc"
 }

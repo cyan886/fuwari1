@@ -231,6 +231,100 @@ a.card-github.fetch-error
   pointer-events: all
   opacity: 1
 
+a.card-link
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: stretch
+  background: var(--license-block-bg)
+  margin: 1rem 0
+  border-radius: var(--radius-large)
+  overflow: hidden
+  text-decoration-thickness: 0px
+  text-decoration-line: none
+  color: var(--tw-prose-body)
+  border: 1px solid var(--line-divider)
+  transition: all 0.15s ease-in-out
+
+  &:hover
+    background-color: var(--btn-regular-bg-hover)
+    border-color: var(--primary)
+    .lc-title
+      color: var(--primary)
+
+  &:active
+    scale: .99
+
+  .lc-text
+    flex: 1
+    padding: 1rem 1.25rem
+    display: flex
+    flex-direction: column
+    justify-content: center
+    min-width: 0
+
+  .lc-title
+    font-size: 1.125rem
+    font-weight: bold
+    color: var(--tw-prose-headings)
+    margin-bottom: 0.25rem
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .lc-description
+    font-size: 0.875rem
+    color: var(--tw-prose-body)
+    opacity: 0.8
+    line-clamp: 2
+    display: -webkit-box
+    -webkit-box-orient: vertical
+    overflow: hidden
+    margin-bottom: 0.5rem
+    line-height: 1.4
+
+  .lc-url
+    display: flex
+    align-items: center
+    font-size: 0.75rem
+    opacity: 0.6
+    gap: 0.375rem
+
+    span
+      white-space: nowrap
+      overflow: hidden
+      text-overflow: ellipsis
+
+    .lc-icon
+      width: 1rem
+      height: 1rem
+      background-color: var(--tw-prose-body)
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='currentColor' d='M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5'/%3E%3C/svg%3E")
+      mask-size: contain
+      mask-position: center
+      mask-repeat: no-repeat
+
+  .lc-image
+    width: 30%
+    min-width: 100px
+    background-size: cover
+    background-position: center
+    border-left: 1px solid var(--line-divider)
+    transition: all 0.15s ease-in-out
+
+  &.has-image:hover
+    .lc-image
+      border-left-color: var(--primary)
+
+@media (max-width: 640px)
+  a.card-link
+    flex-direction: column-reverse
+    .lc-image
+      width: 100%
+      height: 150px
+      border-left: none
+      border-bottom: 1px solid var(--line-divider)
+
 @keyframes pulsate
   0%
     opacity: 0.15

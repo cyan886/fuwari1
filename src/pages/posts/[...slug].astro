@@ -270,6 +270,129 @@ const jsonLd = {
                 // Swup 页面跳转后内容会被替换，需要重新绑定
                 document.addEventListener('swup:contentReplaced', setupShareButton);
             </script>
+
+            <!-- Mermaid.js 集成 -->
+            <script is:inline src="https://fastly.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+            <script is:inline>
+                function initMermaid() {
+                    // 使用 Expressive Code 生成的属性选择器
+                    const mermaidBlocks = document.querySelectorAll('pre[data-language="mermaid"]');
+                    if (mermaidBlocks.length === 0) return;
+
+                    const isDarkMode = document.documentElement.classList.contains('dark');
+                    mermaid.initialize({
+                        startOnLoad: false,
+                        theme: isDarkMode ? 'dark' : 'default',
+                        securityLevel: 'loose',
+                        fontFamily: 'inherit',
+                    });
+
+                    mermaidBlocks.forEach(async (preNode, index) => {
+                        // 从 Expressive Code 结构中提取源码
+                        // 结构: pre > code > div.ec-line > div.code > span (文本)
+                        let code = '';
+                        const codeLines = preNode.querySelectorAll('.ec-line .code');
+                        if (codeLines.length > 0) {
+                            code = Array.from(codeLines)
+                                .map(line => line.textContent || '')
+                                .join('\n')
+                                .trim();
+                        } else {
+                            // fallback
+                            code = (preNode.textContent || preNode.innerText).trim();
+                        }
+                        
+                        if (!code) return;
+
+                        // 查找需要替换的节点：优先替换 .expressive-code 容器
+                        let toReplace = preNode;
+                        const figureParent = preNode.closest('figure.frame');
+                        if (figureParent) toReplace = figureParent;
+                        const ecParent = preNode.closest('.expressive-code');
+                        if (ecParent) toReplace = ecParent;
+
+                        // 创建容器
+                        const id = `mermaid-${index}-${Date.now()}`;
+                        const container = document.createElement('div');
+                        container.id = id;
+                        container.className = 'mermaid';
+                        container.setAttribute('data-processed', 'false');
+                        container.style.display = 'flex';
+                        container.style.justifyContent = 'center';
+                        container.style.margin = '2rem 0';
+                        container.style.opacity = '0';
+                        container.style.transition = 'opacity 0.3s ease';
+                        
+                        // 暂存源码以便重新渲染（如切换主题）
+                        container.setAttribute('data-mermaid-src', code);
+                        
+                        toReplace.parentNode.replaceChild(container, toReplace);
+
+                        try {
+                            const { svg } = await mermaid.render(`${id}-svg`, code);
+                            container.innerHTML = svg;
+                            container.style.opacity = '1';
+                        } catch (error) {
+                            console.error('[Mermaid] Render failed:', error, '\nCode:', code);
+                            container.innerHTML = `<div style="color: red; padding: 1rem; border: 1px solid red; border-radius: 0.5rem;">Mermaid 渲染失败: ${error.message}</div>`;
+                            container.style.opacity = '1';
+                        }
+                    });
+                }
+
+                // 处理 details 标签中 Mermaid 渲染
+                function handleDetailsMermaid() {
+                    document.querySelectorAll('details').forEach(details => {
+                        if (details.dataset.mermaidBound) return;
+                        details.dataset.mermaidBound = '1';
+                        
+                        details.addEventListener('toggle', () => {
+                            if (details.open) {
+                                // 检查是否有未渲染的 Mermaid 块
+                                const unrendered = details.querySelectorAll('pre[data-language="mermaid"]');
+                                if (unrendered.length > 0) {
+                                    initMermaid();
+                                }
+                            }
+                        });
+                    });
+                }
+
+                // 首次加载
+                initMermaid();
+                handleDetailsMermaid();
+
+                // Swup 兼容
+                document.addEventListener('swup:contentReplaced', () => {
+                    initMermaid();
+                    handleDetailsMermaid();
+                });
+
+                // 监听主题切换以重新渲染
+                const themeObserver = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.attributeName === 'class' && mutation.target === document.documentElement) {
+                            const isDark = document.documentElement.classList.contains('dark');
+                            mermaid.initialize({ theme: isDark ? 'dark' : 'default' });
+                            
+                            // 重新渲染页面上的所有 mermaid 图表
+                            document.querySelectorAll('.mermaid[data-mermaid-src]').forEach(async (container) => {
+                                const code = container.getAttribute('data-mermaid-src');
+                                if (code) {
+                                    const id = container.id;
+                                    try {
+                                        const { svg } = await mermaid.render(`${id}-rerender-${Date.now()}`, code);
+                                        container.innerHTML = svg;
+                                    } catch (e) {
+                                        console.error('[Mermaid] Re-render failed:', e);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+                themeObserver.observe(document.documentElement, { attributes: true });
+            </script>
     <br>
 
     <div class="flex flex-col md:flex-row justify-between mb-4 gap-4 overflow-hidden w-full">
