@@ -168,3 +168,38 @@ curl https://www.micostar.cc/4ff84931e3084c36bcc43c09ec05df75.txt
 - **Expressive Code:** 代码语法高亮 (GitHub Dark 主题)
 - **Remark/Rehype:** Markdown 处理链（KaTeX 数学公式、Admonitions、GitHub Cards）
 - **Swup:** 平滑页面过渡动画
+- **Mermaid:** 流程图/序列图渲染
+
+---
+
+## Mermaid 图表集成
+
+### 实现位置
+`src/pages/posts/[...slug].astro` 中嵌入了 Mermaid.js 初始化脚本。
+
+### 特性
+- **异步加载**: Mermaid 脚本动态注入，不阻塞页面渲染
+- **串行渲染**: 避免并行渲染导致的竞态条件
+- **主题同步**: 监听主题切换自动重新渲染
+- **Swup 兼容**: 页面切换后自动初始化
+- **Details 标签支持**: 折叠区展开时延迟渲染
+
+### 已知问题修复
+- `mermaid is not defined` 错误：MutationObserver 中添加了存在性检查
+
+---
+
+## 移动端性能优化
+
+### CSS `content-visibility` 优化
+位于 `src/styles/markdown.css`，仅在移动端 (≤768px) 启用：
+
+| 元素 | 预估高度 | 说明 |
+| :--- | :--- | :--- |
+| `.expressive-code` | 200px | 代码块 |
+| `details` | 100px | 折叠区 |
+| `.katex-display` | 80px | 数学公式 |
+| `.mermaid` | 300px | 流程图 |
+
+**原理**: `content-visibility: auto` 让浏览器跳过屏幕外元素的渲染，显著减少首屏渲染时间。
+

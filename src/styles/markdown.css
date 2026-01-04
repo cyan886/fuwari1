@@ -3,7 +3,12 @@
         @apply text-3xl;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         .anchor {
             @apply transition -m-0.5 ml-[0.2ch] p-0.5 select-none opacity-0 no-underline !important;
 
@@ -20,14 +25,12 @@
     }
 
     a:not(.no-styling) {
-        @apply relative bg-none transition rounded-md p-1 -m-1 font-medium text-[var(--primary)]
-        before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0
-        before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10
-        underline decoration-[var(--link-underline)] decoration-1 decoration-dashed underline-offset-4;
+        @apply relative bg-none transition rounded-md p-1 -m-1 font-medium text-[var(--primary)] before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0 before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10 underline decoration-[var(--link-underline)] decoration-1 decoration-dashed underline-offset-4;
         -webkit-box-decoration-break: clone;
         box-decoration-break: clone;
-    
-        &:hover, &:active {
+
+        &:hover,
+        &:active {
             @apply decoration-transparent;
             background: var(--btn-plain-bg-hover);
             border-bottom: 1px dashed var(--link-hover);
@@ -39,14 +42,17 @@
         @apply bg-[var(--inline-code-bg)] text-[var(--inline-code-color)] px-1 py-0.5 rounded-md overflow-hidden;
 
         font-family: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+
         &:before {
-            content:none;
+            content: none;
         }
+
         &:after {
-            content:none;
+            content: none;
         }
 
         counter-reset: line;
+
         span.line {
             &:before {
                 @apply text-white/25 mr-4 w-4 inline-block;
@@ -54,7 +60,9 @@
                 counter-increment: line;
                 direction: rtl;
             }
-            &:last-child:empty, &:last-child:has(> span:empty:only-child) {
+
+            &:last-child:empty,
+            &:last-child:has(>span:empty:only-child) {
                 display: none;
             }
         }
@@ -62,9 +70,9 @@
 
     .copy-btn {
         all: initial;
-        @apply opacity-0 shadow-lg shadow-black/50 absolute active:scale-90 h-8 w-8 top-3 right-3 text-sm rounded-lg transition-all ease-in-out z-20 cursor-pointer
-               bg-white/10 dark:bg-white/10 hover:bg-white/20 text-white ring-1 ring-white/20 backdrop-blur-sm;
+        @apply opacity-0 shadow-lg shadow-black/50 absolute active:scale-90 h-8 w-8 top-3 right-3 text-sm rounded-lg transition-all ease-in-out z-20 cursor-pointer bg-white/10 dark:bg-white/10 hover:bg-white/20 text-white ring-1 ring-white/20 backdrop-blur-sm;
     }
+
     .frame:hover .copy-btn {
         opacity: 1;
     }
@@ -72,27 +80,33 @@
     .copy-btn-icon {
         @apply absolute top-1/2 left-1/2 transition -translate-x-1/2 -translate-y-1/2 w-4 h-4 fill-white pointer-events-none;
     }
+
     .copy-btn .copy-icon {
         @apply opacity-100 fill-white dark:fill-white/75;
     }
+
     .copy-btn.success .copy-icon {
         @apply opacity-0 fill-[var(--deep-text)]
     }
+
     .copy-btn .success-icon {
         @apply opacity-0 fill-white;
     }
+
     .copy-btn.success .success-icon {
         @apply opacity-100
     }
 
     .expressive-code {
         @apply my-4;
+
         ::selection {
             @apply bg-[var(--codeblock-selection)];
         }
     }
 
-    ul, ol {
+    ul,
+    ol {
         li::marker {
             @apply text-[var(--primary)];
         }
@@ -107,9 +121,54 @@
         }
 
         /* Remove the double quotes from default styles */
-        p:before, p:after {
+        p:before,
+        p:after {
             @apply content-none;
         }
 
+    }
+
+    /* ===== 移动端长文章性能优化 ===== */
+
+    /* 
+     * 策略：首屏加载时使用 content-visibility: auto 跳过屏幕外渲染
+     * 页面加载完成后（添加 .content-ready 类）移除限制，确保滚动时流畅
+     */
+    @media (max-width: 768px) {
+
+        /* 代码块延迟渲染 */
+        .expressive-code {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 200px;
+        }
+
+        /* details 折叠区延迟渲染 */
+        details {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 100px;
+        }
+
+        /* 数学公式块延迟渲染 */
+        .math-display,
+        .katex-display {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 80px;
+        }
+
+        /* Mermaid 图表延迟渲染 */
+        .mermaid {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 300px;
+        }
+
+        /* 页面加载完成后，移除 content-visibility 限制，确保滚动流畅 */
+        .content-ready .expressive-code,
+        .content-ready details,
+        .content-ready .math-display,
+        .content-ready .katex-display,
+        .content-ready .mermaid {
+            content-visibility: visible;
+            contain-intrinsic-size: none;
+        }
     }
 }

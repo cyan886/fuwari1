@@ -13,7 +13,7 @@
 {
   "name": "流转星(Betsy)",
   "avatar": "https://image.cloudrunmax.top/file/CF/1767345178206_betsy.webp",
-  "introduction": "分享网络技术、服务器部署、Unity开发、AI技术应用与原理",
+  "introduction": "爱我所爱，我们是彼此永远的动力",
   "url": "https://www.micostar.cc"
 }
 ```
