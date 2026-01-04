@@ -452,7 +452,7 @@ const jsonLd = {
                     
                     function enableSmoothScroll() {
                         var container = document.querySelector('.markdown-content');
-                        if (container) {
+                        if (container && !container.classList.contains('content-ready')) {
                             container.classList.add('content-ready');
                         }
                     }
@@ -463,11 +463,21 @@ const jsonLd = {
                             clearTimeout(resources.timeoutId);
                         }
                         
-                        var timeoutId = setTimeout(enableSmoothScroll, 2000);
+                        // 缩短延迟到 300ms，快速解除限制
+                        var timeoutId = setTimeout(enableSmoothScroll, 300);
                         
                         if (resources) {
                             resources.timeoutId = timeoutId;
                         }
+                        
+                        // 用户开始滚动时立即解除限制
+                        var scrollHandler = function() {
+                            enableSmoothScroll();
+                            window.removeEventListener('scroll', scrollHandler);
+                            window.removeEventListener('touchmove', scrollHandler);
+                        };
+                        window.addEventListener('scroll', scrollHandler, { once: true, passive: true });
+                        window.addEventListener('touchmove', scrollHandler, { once: true, passive: true });
                     }
                     
                     // 首次加载
