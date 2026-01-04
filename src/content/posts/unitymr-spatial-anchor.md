@@ -7,6 +7,7 @@ tags: [Unity,PICO,MR,空间锚点(Spatial Anchor)]
 
 draft: false 
 lang: ''
+prerenderAll: true  # 预渲染所有内容（包括折叠区），确保长文章滚动流畅
 ---
 
 # Unity开发MR中应用空间锚点的场景

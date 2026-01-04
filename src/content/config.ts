@@ -11,6 +11,9 @@ const postsCollection = defineCollection({
 		tags: z.array(z.string()).optional().default([]),
 		lang: z.string().optional().default(""),
 		pinned: z.boolean().optional().default(false),
+		
+		/* 性能优化：预渲染所有内容（包括折叠区），适用于长文章 */
+		prerenderAll: z.boolean().optional().default(false),
 
 		/* For internal use */
 		prevTitle: z.string().default(""),

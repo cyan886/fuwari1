@@ -21,7 +21,6 @@ pnpm run build
 ## 📄 文章结构
 
 ### Front Matter (文章头部信息)
-添加pinned: true即可置顶文章
 ```yaml
 ---
 title: 文章标题                    # 必填
@@ -32,8 +31,13 @@ tags: [标签1, 标签2, 标签3]       # 标签
 category: 分类名称                # 分类
 draft: false                      # 是否为草稿
 lang: ''                         # 语言(默认继承配置)
+pinned: true                     # 置顶文章（显示在列表最前面）
+prerenderAll: true               # 预渲染所有内容（适用于长文章，确保滚动流畅）
 ---
 ```
+
+> **置顶文章**：添加 `pinned: true` 即可将文章置顶显示  
+> **长文章优化**：添加 `prerenderAll: true` 可预渲染折叠区内容，确保滚动流畅
 
 ### Markdown 内容格式
 

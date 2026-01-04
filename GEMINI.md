@@ -77,6 +77,7 @@ tags: ["Tag1", "Tag2"]
 category: "Category"
 draft: false
 pinned: false           # 是否置顶
+prerenderAll: false     # 预渲染所有内容（适用于长文章，确保滚动流畅）
 lang: zh_CN             # 语言 (可选)
 ---
 ```
